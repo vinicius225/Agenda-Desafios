@@ -1,6 +1,7 @@
 ﻿using AgendaDesafios.Domain.Abstractions;
 using AgendaDesafios.Domain.Entities;
 using AgendaDesafios.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
@@ -41,9 +42,9 @@ namespace AgendaDesafios.Infrastructure.Repositories
 
         public async Task<Calendar> Update(Calendar obj)
         {
-            var result = await _context.Calendars.Update(obj);
-            _context.SaveChanges();
-            return result.Entity;
+            _context.Calendars.Update(obj);
+            await _context.SaveChangesAsync(); 
+            return obj; 
         }
     }
 }
