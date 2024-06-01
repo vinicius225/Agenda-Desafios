@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AgendaDesafios.Application\AgendaDesafios.Application.csproj" />
+    <ProjectReference Include="..\AgendaDesafios.Domain\AgendaDesafios.Domain.csproj" />
+    <ProjectReference Include="..\AgendaDesafios.Infrastructure\AgendaDesafios.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

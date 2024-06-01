@@ -4,7 +4,7 @@ export default ({ instance, baseURL, headers }) => {
             return instance({
                 method: 'post',
                 baseURL,
-                url: 'Auth/login',
+                url: 'auth/login',
                 responseType: 'json',
                 headers: headers,
                 data: user,
