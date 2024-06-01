@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AgendaDesafios.Domain.Abstractions;
+using AgendaDesafios.Infrastructure.Repositories;
 
 namespace AgendaDesafios.CrossCutting.AppDependeceInjector
 {
@@ -14,11 +16,18 @@ namespace AgendaDesafios.CrossCutting.AppDependeceInjector
     {
         public static void AddInfraestructureDataBase(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString")));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }
         public static void AddInfraestructureRepository(this IServiceCollection services)
         {
-            services.AddSingleton<IUserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPhonebookRepository, PhoneBookRepository>();
+            services.AddScoped<ICalendarRepository, CalendarRepository>();
+        }
+        public static void AddServiceInjector(this IServiceCollection services)
+        {
+            var myHandle = AppDomain.CurrentDomain.Load("AgendaDesafios.Infrastructure");
+            services.AddMediatR(conf => conf.RegisterServicesFromAssemblies(myHandle));
         }
     }
 }

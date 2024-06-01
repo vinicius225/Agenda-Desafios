@@ -28,7 +28,7 @@ namespace AgendaDesafios.Domain.Entities
         public Phonebook(int id, string name, string email, StatussEnum status, string phone, int idUser)
         {
             ValidationDomain.VerificationDomainError(id < 0, DomainErrosConsts.ID_INVALID);
-            Id = Id;
+            Id = id;
             ValidationEntity(name, email, status, phone, idUser);
 
         }
@@ -49,6 +49,7 @@ namespace AgendaDesafios.Domain.Entities
             Email = email;
             Status = status;
             Phone = phone;
+            IdUser = idUser;
         }
 
     }

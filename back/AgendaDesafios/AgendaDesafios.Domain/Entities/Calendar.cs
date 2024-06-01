@@ -35,7 +35,7 @@ namespace AgendaDesafios.Domain.Entities
         {
             ValidationDomain.VerificationDomainError(string.IsNullOrWhiteSpace(title), DomainErrosConsts.INPUT_IS_EMPTY);
             ValidationDomain.VerificationDomainError(title.Length < 3, DomainErrosConsts.MIN_LENGTH);
-            ValidationDomain.VerificationDomainError(endEvent >= startEvent,DomainErrosConsts.DATAE_END_GTN_DATE_START);
+            ValidationDomain.VerificationDomainError(endEvent <= startEvent, DomainErrosConsts.DATAE_END_GTN_DATE_START);
             ValidationDomain.VerificationDomainError(description.Length > 500, DomainErrosConsts.EXCEDED_CHARACTER_LIMIT);
 
             Title = title;
@@ -45,6 +45,7 @@ namespace AgendaDesafios.Domain.Entities
             SendEmail = sendEmail;
             Status = status;
             SituationEvent = situationEvent;
+            IdUser = idUser;
         }
     }
 }
