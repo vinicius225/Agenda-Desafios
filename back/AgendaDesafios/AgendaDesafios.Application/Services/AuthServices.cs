@@ -32,7 +32,7 @@ namespace AgendaDesafios.Application.Services
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(int.Parse(_configuration["Jwt:Hours"])),
+                Expires = DateTime.UtcNow.AddHours(int.Parse(_configuration["Jwt:Time"])),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])),
                     SecurityAlgorithms.HmacSha256Signature
