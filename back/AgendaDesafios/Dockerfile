@@ -27,5 +27,9 @@ EXPOSE 8080
 # Comando de entrada para executar a aplicação
 ENTRYPOINT ["dotnet", "AgendaDesafios.WebAPI.dll"]
 
+# Adicionar comando de atualização do banco de dados (migrations)
+RUN dotnet ef database update --project AgendaDesafios.WebAPI
+
+
 # sudo docker build -t back-image .
 # docker run  --name back-container -p 5000:8080 back-image
