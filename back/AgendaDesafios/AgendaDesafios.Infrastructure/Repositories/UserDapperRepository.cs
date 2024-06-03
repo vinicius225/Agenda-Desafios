@@ -36,7 +36,7 @@ namespace AgendaDesafios.Infrastructure.Repositories
         public async Task<User> GetByLogin(string login)
         {
             string query = "SELECT * FROM USERS WHERE Login=@login";
-            return await _connection.QueryFirstAsync<User>(query, login);
+            return await _connection.QueryFirstAsync<User>(query, new {login=login});
         }
     }
 }

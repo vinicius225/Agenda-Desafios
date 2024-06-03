@@ -1,8 +1,8 @@
-﻿using AgendaDesafios.WebAPI.Responses;
+﻿using AgendaDesafios.Application.Login.Queries;
+using AgendaDesafios.WebAPI.Responses;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using AgendaDesafios.Application.Abstractions;
-using AgendaDesafios.Application.DTOs.Auth;
-using AgendaDesafios.Application.Validations;
+
 
 namespace AgendaDesafios.WebAPI.Controllers
 {
@@ -10,21 +10,19 @@ namespace AgendaDesafios.WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly IMediator _mediator;
+
+        public AuthController(IMediator mediator)
         {
-            _authService = authService;
+            _mediator = mediator;
         }
+
+
         [HttpPost]
-        public async Task<IResult> Authentication(AuthLoginDTO auth)
+        public async Task<IResult> Authentication(AuthUserQuery auth)
         {
-            var validation =new AuthLoginValidation();
-            var requestValidation = validation.Validate(auth);
-            if (!requestValidation.IsValid)
-            {
-                return ResponseAPI.Send(requestValidation.Errors);
-            }
-            return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso",await _authService.AuthLogin(auth));
+            var response = _mediator.Send(auth);
+            return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso",await response);
         }
     }
 }

@@ -16,7 +16,17 @@ namespace AgendaDesafios.Domain.Entities
         public string Name { get; private set; }
         public string Email { get; private set; }
         public string Phone { get; private set; }
-        public StatussEnum Status { get; private set; }
+        private StatussEnum _status;
+        public StatussEnum Status
+        {
+            get => _status;
+            private set => _status = value;
+        }
+
+        public void UpdateStatus(StatussEnum newStatus)
+        {
+            _status = newStatus;
+        }
         public int IdUser { get; private set; }
 
         public virtual User User { get; private set; }

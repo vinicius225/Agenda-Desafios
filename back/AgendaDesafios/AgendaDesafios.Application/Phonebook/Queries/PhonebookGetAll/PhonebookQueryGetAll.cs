@@ -1,14 +1,14 @@
 ﻿using AgendaDesafios.Domain.Entities;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgendaDesafios.Domain.Abstractions
+namespace AgendaDesafios.Application.Queries.PhonebookGetAll
 {
-    public interface IUserRepository : IRepository<User>
+    public class PhonebookQueryGetAll : IRequest<IEnumerable<Phonebook>>
     {
-
     }
 }

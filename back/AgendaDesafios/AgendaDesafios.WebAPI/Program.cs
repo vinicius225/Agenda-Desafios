@@ -3,11 +3,21 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AgendaDesafios.CrossCutting.AppDependeceInjector;
 using Microsoft.OpenApi.Models;
+using AgendaDesafios.Application.DTOs;
+using AgendaDesafios.Application.Login.Queries;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Adiciona serviços ao contêiner.
 builder.Services.AddControllers();
+
+builder.Services.AddMediatR(typeof(AuthUserQueryHandler).Assembly);
+
+
+
+// Configuração do Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agenda Blue", Version = "v1" });
@@ -40,36 +50,35 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(securityRequirement);
 });
 
-builder.Services.AddAuthentication(x =>
+// Configuração da autenticação JWT
+builder.Services.AddAuthentication(options =>
 {
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(x =>
+.AddJwtBearer(options =>
 {
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["JWT:Key"])),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"])),
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateLifetime = true
     };
 });
 
-
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
+// Registro dos serviços de infraestrutura
 builder.Services.AddInfraestructureDataBase(builder.Configuration);
 builder.Services.AddInfraestructureRepository();
-builder.Services.AddServiceInjector();
-
 
 var app = builder.Build();
 
+// Configuração do CORS
 app.UseCors(builder =>
 {
     builder
@@ -78,12 +87,20 @@ app.UseCors(builder =>
     .AllowAnyHeader();
 });
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+// Middleware do Swagger
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agenda Blue v1");
+});
 
-
-
-
+// Middleware de autenticação e autorização
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

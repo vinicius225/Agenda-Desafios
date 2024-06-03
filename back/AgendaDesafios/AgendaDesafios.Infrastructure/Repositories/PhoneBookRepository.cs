@@ -29,27 +29,18 @@ namespace AgendaDesafios.Infrastructure.Repositories
             return obj;
         }
 
-        public async Task<Phonebook> Delete(int id)
+        public async Task Delete(int id)
         {
-            var phonebook = await _context.Phonebooks.FindAsync(id);
-            if (phonebook == null)
-                return null;
+            var phonebook = await _context.Phonebooks.FirstAsync(a => a.Id == id); ;
 
-            _context.Phonebooks.Remove(phonebook);
+            phonebook.UpdateStatus(Domain.Enums.StatussEnum.Inactive);
+            _context.Phonebooks.Update(phonebook);
             await _context.SaveChangesAsync();
 
-            return phonebook;
+
         }
 
-        public async Task<Phonebook> GetAsync(int id)
-        {
-            return await _context.Phonebooks.FindAsync(id);
-        }
 
-        public async Task<IEnumerable<Phonebook>> GetAsync()
-        {
-            return await _context.Phonebooks.ToListAsync();
-        }
 
         public async Task<Phonebook> Update(Phonebook obj)
         {

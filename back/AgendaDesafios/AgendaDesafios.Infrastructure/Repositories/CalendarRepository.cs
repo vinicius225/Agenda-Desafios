@@ -25,20 +25,12 @@ namespace AgendaDesafios.Infrastructure.Repositories
             return result.Entity;
         }
 
-        public async Task<Calendar> Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            _context.Calendars.Where(a => a.Id == id).FirstOrDefault().UpdateStatus(Domain.Enums.StatussEnum.Inactive);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<Calendar> GetAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Calendar>> GetAsync()
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<Calendar> Update(Calendar obj)
         {

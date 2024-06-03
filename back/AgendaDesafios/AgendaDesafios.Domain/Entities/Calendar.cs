@@ -3,6 +3,7 @@ using AgendaDesafios.Domain.Enums;
 using AgendaDesafios.Domain.Validation;
 using System;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 namespace AgendaDesafios.Domain.Entities
 {
@@ -14,7 +15,17 @@ namespace AgendaDesafios.Domain.Entities
         public DateTime StartEvent { get; private set; }
         public DateTime EndEvent { get; private set; }
         public bool SendEmail { get; private set; }
-        public StatussEnum Status { get; private set; }
+        private StatussEnum _status;
+        public StatussEnum Status
+        {
+            get => _status;
+            private set => _status = value;
+        }
+
+        public void UpdateStatus(StatussEnum newStatus)
+        {
+            _status = newStatus;
+        }
         public SituationEventEnum SituationEvent { get; private set; }
         public int IdUser { get; private set; }
         public virtual User User { get; private set; }
