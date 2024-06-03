@@ -1,5 +1,4 @@
 ﻿using AgendaDesafios.Application.Abstractions;
-using AgendaDesafios.Application.CommandsAndQueries.Queries;
 using AgendaDesafios.Application.Consts;
 using AgendaDesafios.Application.DTOs.Auth;
 using AgendaDesafios.Application.Exceptions;
@@ -29,14 +28,16 @@ namespace AgendaDesafios.Application.Services
         {
             try
             {
-                var query = new GetUserByLoginQuery(authLoginDTO.Login);
-                var _user = await  _mediator.Send(query);
+                ////var query = new GetUserByLoginQuery(authLoginDTO.Login);
+                //var _user = await  _mediator.Send();
 
-                if (_user == null || _user.Password != SHA256(authLoginDTO.Password))
-                {
-                    ApplicationExceptions.Error(ExceptionsMessages.INVALID_LOGIN);
-                }
-                return new AuthLoginResponseDTO(_user.Id, _user.Email, _user.Name, BuildJWT(_user));
+                //if (_user == null || _user.Password != SHA256(authLoginDTO.Password))
+                //{
+                //    ApplicationExceptions.Error(ExceptionsMessages.INVALID_LOGIN);
+                ////}
+                //return new AuthLoginResponseDTO(_user.Id, _user.Email, _user.Name, BuildJWT(_user));
+
+                return null;
 
 
             }

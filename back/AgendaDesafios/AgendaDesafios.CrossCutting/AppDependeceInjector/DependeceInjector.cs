@@ -15,7 +15,6 @@ using Microsoft.Data.SqlClient;
 using AgendaDesafios.Application.Abstractions;
 using AgendaDesafios.Application.Services;
 using System.Reflection;
-using AgendaDesafios.Application.CommandsAndQueries.Queries;
 
 namespace AgendaDesafios.CrossCutting.AppDependeceInjector
 {
@@ -46,8 +45,7 @@ namespace AgendaDesafios.CrossCutting.AppDependeceInjector
         public static void AddServiceInjector(this IServiceCollection services)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
-            services.AddScoped<GetUserByLoginQueryHandler>();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));;
 
             services.AddScoped<IAuthService, AuthService>();
 
