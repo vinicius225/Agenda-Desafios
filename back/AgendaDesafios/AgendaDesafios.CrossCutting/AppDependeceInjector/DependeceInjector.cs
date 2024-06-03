@@ -47,7 +47,6 @@ namespace AgendaDesafios.CrossCutting.AppDependeceInjector
             var assembly = Assembly.GetExecutingAssembly();
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));;
 
-            services.AddScoped<IAuthService, AuthService>();
 
         }
     }
