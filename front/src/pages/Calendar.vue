@@ -14,21 +14,34 @@
       </div>
     </div>
     <DataTable
-      :value="cars"
+      :value="calendars"
       :scrollable="true"
       scrollHeight="400px"
       responsiveLayout="scroll"
     >
-      <Column field="vin" header="Vin" :resizable="true"></Column>
-      <Column field="brand" header="Brand" :resizable="true"></Column>
-      <Column field="year" header="Year" :resizable="true"></Column>
-      <Column field="color" header="Color" :resizable="true"></Column>
+      <Column field="title" header="Titulo" :resizable="true"></Column>
+      <Column field="description" header="Descrição" :resizable="true"></Column>
+      <Column field="startEvent" header="Data Inicial" :resizable="true">
+        <template #body="{ data }">
+          {{ maskDate(data.startEvent) }}
+        </template>
+      </Column>
+      <Column field="endEvent" header="Data Final" :resizable="true">
+        <template #body="{ data }">
+          {{ maskDate(data.endEvent) }}
+        </template>
+      </Column>
       <Column header="Edit" :resizable="true">
-        <template #body="{ rowData }">
+        <template #body="{ data }">
           <Button
             icon="pi pi-pencil"
             class="edit-button"
-            @click="openEditModal(rowData)"
+            @click="openEditModal(data)"
+          />
+          <Button
+            icon="pi pi-trash"
+            class="delete-button"
+            @click="deleteCalendar(data)"
           />
         </template>
       </Column>
@@ -36,33 +49,40 @@
 
     <!-- Modal de Edição -->
     <Dialog
-      v-model="displayEditModal"
+      v-model:visible="displayEditModal"
       header="Editar Compromisso"
-      :visible="displayEditModal"
-      width="500px"
+      style="width: 50%"
     >
       <!-- Formulário de Edição -->
       <form @submit.prevent="saveChanges">
-        <!-- Campos de edição -->
         <div class="p-fluid">
           <div class="p-field">
-            <label for="vin">Vin</label>
-            <InputText id="vin" v-model="editedItem.vin" />
+            <label for="title">Titulo</label>
+            <InputText id="title" required v-model="editedItem.title" />
           </div>
           <div class="p-field">
-            <label for="brand">Brand</label>
-            <InputText id="brand" v-model="editedItem.brand" />
+            <label for="description">Descrição</label>
+            <InputText required id="description" v-model="editedItem.description" />
           </div>
           <div class="p-field">
-            <label for="year">Year</label>
-            <InputText id="year" v-model="editedItem.year" />
+            <label for="startDate">Data Inicial</label>
+            <Calendar
+              id="startDate"
+              required
+              v-model="editedItem.startEvent"
+              :showTime="true"
+            />
           </div>
           <div class="p-field">
-            <label for="color">Color</label>
-            <InputText id="color" v-model="editedItem.color" />
+            <label for="endDate">Data Final</label>
+            <Calendar
+              id="endDate"
+              required
+              v-model="editedItem.endEvent"
+              :showTime="true"
+            />
           </div>
         </div>
-        <!-- Botões de ação -->
         <div class="p-dialog-footer">
           <Button
             label="Cancelar"
@@ -82,38 +102,44 @@
 
     <!-- Modal de Cadastro -->
     <Dialog
-      v-model="displayCadastroModal"
+      v-model:visible="displayCadastroModal"
       header="Cadastrar Compromisso"
-      :visible="displayCadastroModal"
-      width="500px"
+      style="width: 50%"
     >
       <!-- Formulário de Cadastro -->
       <form @submit.prevent="saveNew">
-        <!-- Campos de cadastro -->
         <div class="p-fluid">
           <div class="p-field">
-            <label for="newVin">Titulo</label>
-            <InputText id="newVin" v-model="newItem.title" />
+            <label for="newTitle">Titulo</label>
+            <InputText id="newTitle" required v-model="newItem.title" />
           </div>
           <div class="p-field">
-            <label for="newBrand">Descrição</label>
-            <InputText id="newBrand" v-model="newItem.description" />
-
+            <label for="newDescription">Descrição</label>
+            <InputText id="newDescription" required v-model="newItem.description" />
           </div>
           <div class="p-field">
-            <label for="newYear">Data Inicial</label>
-            <InputText id="newYear" v-model="newItem.startEvent" />
+            <label for="newStartDate">Data Inicial</label>
+            <Calendar
+              id="newStartDate"
+              v-model="newItem.startEvent"
+              required
+              :showTime="true"
+            />
           </div>
           <div class="p-field">
-            <label for="newYear">Data Inicial</label>
-            <InputText id="newYear" v-model="newItem.endEvent" />
+            <label for="newEndDate">Data Final</label>
+            <Calendar
+              id="newEndDate"
+              required
+              v-model="newItem.endEvent"
+              :showTime="true"
+            />
           </div>
           <div class="p-field">
-            <label for="newColor">Color</label>
-            <InputText id="newColor" v-model="newItem.color" />
+            <label for="sendEmail">Enviar E-mail</label>
+            <Checkbox id="sendEmail" v-model="newItem.sendEmail" />
           </div>
         </div>
-        <!-- Botões de ação -->
         <div class="p-dialog-footer">
           <Button
             label="Cancelar"
@@ -134,62 +160,113 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref, onMounted } from "vue";
 import DataTable from "primevue/datatable";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
+import Checkbox from "primevue/checkbox";
+import Calendar from "primevue/calendar";
 import WebApi from "@/api";
+import { maskDate } from "@/utils/masks";
 
-const calendars = ref();
+const calendars = ref([]);
+const displayEditModal = ref(false);
+const displayCadastroModal = ref(false);
+const editedItem = ref({
+  title: "",
+  description: "",
+  startEvent: "",
+  endEvent: "",
+  sendEmail: false,
+});
+const newItem = ref({
+  title: "",
+  description: "",
+  startEvent: "",
+  endEvent: "",
+  sendEmail: false,
+});
+
+const listCalendar = () => {
+  WebApi.getCalendarAll()
+    .then((res) => {
+      calendars.value = res.data.result;
+    })
+    .catch((error) => {
+      console.error("Error fetching calendars:", error);
+    });
+};
 
 onMounted(() => {
   listCalendar();
 });
-const listCalendar = () => {
-  WebApi.getCalendarAll()
-    .then((res) => {
-      calendars = res.data.result;
-    })
-    .catch((error) => {
-      errorInterceptor(error, this, "Gerenciamento externo dos Clientes");
-    })
-    .then(() => {
-      this.mainLoading = false;
-    });
-};
-
-const displayEditModal = ref(false);
-const displayCadastroModal = ref(false);
-const editedItem = ref({});
 
 const openEditModal = (rowData) => {
-  editedItem.value = { ...rowData }; // Copia o item selecionado para o formulário de edição
+  editedItem.value = { ...rowData };
   displayEditModal.value = true;
 };
 
+const openCadastroModal = () => {
+  newItem.value = {
+    title: "",
+    description: "",
+    startEvent: "",
+    endEvent: "",
+    sendEmail: false,
+  };
+  displayCadastroModal.value = true;
+};
+
 const saveChanges = () => {
+  updateCalendar(editedItem.value);
   closeEditModal();
 };
 
 const closeEditModal = () => {
-  editedItem.value = {}; // Limpa o item editado
-  displayEditModal.value = false; // Fecha o modal de edição
-};
-
-const openCadastroModal = () => {
-  displayCadastroModal.value = true; // Abre o modal de cadastro
+  editedItem.value = {};
+  displayEditModal.value = false;
 };
 
 const saveNew = () => {
-  // Lógica para salvar o novo item
+  createCalendar(newItem.value);
   closeCadastroModal();
 };
 
 const closeCadastroModal = () => {
-  newItem.value = {}; // Limpa o novo item
-  displayCadastroModal.value = false; // Fecha o modal de cadastro
+  newItem.value = {};
+  display
+  displayCadastroModal.value = false;
+};
+
+const deleteCalendar = (rowData) => {
+  if (!rowData || !rowData.id) {
+    console.error("Invalid rowData:", rowData);
+    return;
+  }
+
+  WebApi.deleteCalendar(rowData.id)
+    .then(() => {
+      calendars.value = calendars.value.filter(
+        (calendar) => calendar.id !== rowData.id
+      );
+    })
+    .catch((error) => {
+      console.error("Error deleting calendar:", error);
+    });
+};
+
+
+const updateCalendar = (calendar) => {
+  WebApi.updateCalendar(calendar)
+    .then(() => {
+      const index = calendars.value.findIndex((c) => c.id === calendar.id);
+      calendars.value.splice(index, 1, calendar);
+    })
+    .catch((error) => {
+      console.error("Erro ao atualizar o calendário:", error);
+    });
 };
 </script>
 
@@ -207,7 +284,16 @@ const closeCadastroModal = () => {
 .edit-button {
   margin-right: 5px;
 }
+
+.delete-button {
+  margin-right: 5px;
+}
+
 .p-datatable-scrollable-wrapper {
   overflow-x: auto;
+}
+.button {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

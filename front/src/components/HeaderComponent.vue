@@ -7,7 +7,7 @@
       <i class="pi pi-user icon" @click="toggleDropdown"></i>
       <div v-if="isDropdownOpen" class="dropdown-menu">
         <router-link to="/profile" class="dropdown-item">Perfil</router-link>
-        <router-link to="/schedule" class="dropdown-item">Sair</router-link>
+        <a @click="exit" class="dropdown-item">Sair</a>
       </div>
     </div>
   </div>
@@ -15,11 +15,22 @@
 
 <script setup>
 import { ref } from 'vue';
+import router from "@/router";
+import store from "@/store";
+import { DO_LOGOUT } from "@/store/actions";
 
 const isDropdownOpen = ref(false);
 
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+const exit = () => {
+  if (store && store.dispatch) { 
+    store.dispatch(DO_LOGOUT).then(() => {
+      router.push("/login");
+    });
+  }
 };
 </script>
 

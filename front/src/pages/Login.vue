@@ -49,7 +49,6 @@ const user = reactive({
 
 const onSubmit = () => {
   if (user.login && user.password) {
-    debugger;
     store.dispatch(DO_LOGIN, toRaw(user)).then((res) => {
       if (res.message ==  "Sucesso") router.push("/home");
       else if(res.result.httpStatusCode >= 500){
