@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace AgendaDesafios.Application.Queries.PhonebookGetAll
 {
-    public class PhonebookQueryAllHandle : IRequestHandler<PhonebookQueryGetAll, IEnumerable<Phonebook>>
+    public class CalendarQueryAllHandle : IRequestHandler<PhonebookQueryGetAll, IEnumerable<Phonebook>>
     {
         private readonly IPhonebookDapperRepository _phonebookDapperRepository;
-        public PhonebookQueryAllHandle(IPhonebookDapperRepository phonebookDapperRepository)
+        public CalendarQueryAllHandle(IPhonebookDapperRepository phonebookDapperRepository)
         {
             _phonebookDapperRepository = phonebookDapperRepository;
         }

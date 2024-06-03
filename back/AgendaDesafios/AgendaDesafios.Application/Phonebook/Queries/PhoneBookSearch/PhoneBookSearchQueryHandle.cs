@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace AgendaDesafios.Application.Queries.PhoneBookSearch
 {
-    public class PhoneBookSearchQueryHandle : IRequestHandler<PhoneBookSearchQuery, IEnumerable<Phonebook>>
+    public class PhoneBookSearchQueryHandle : IRequestHandler<PhonebookSearchQuery, IEnumerable<Phonebook>>
     {
         private readonly IPhonebookDapperRepository _phonebookDapperRepository;
         public PhoneBookSearchQueryHandle(IPhonebookDapperRepository phonebookDapperRepository)
         {
             _phonebookDapperRepository = phonebookDapperRepository;
         }
-        public async Task<IEnumerable<Phonebook>> Handle(PhoneBookSearchQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Phonebook>> Handle(PhonebookSearchQuery request, CancellationToken cancellationToken)
         {
             return await _phonebookDapperRepository.Search(request.Search);
         }

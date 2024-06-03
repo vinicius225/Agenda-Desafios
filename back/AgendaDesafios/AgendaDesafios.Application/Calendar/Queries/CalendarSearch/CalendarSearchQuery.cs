@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgendaDesafios.Application.Queries.PhoneBookSearch
+namespace AgendaDesafios.Application.Queries.CalendarSearch
 {
-    public class PhonebookSearchQuery : IRequest<IEnumerable<Phonebook>>
+    public class CalendarSearchQuery : IRequest<IEnumerable<Calendar>>
     {
         public string Search { get; set; }
     }
