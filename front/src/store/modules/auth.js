@@ -1,12 +1,12 @@
 import { ref } from 'vue';
 import { DO_LOGIN, DO_LOGOUT } from '@/store/actions';
-import { SET_AUTH, SET_HOME_CHARTS, SET_HOME_TABLE } from '@/store/mutations';
-import WebApi from "@/API";
+import { SET_AUTH} from '@/store/mutations';
+import WebApi from "@/api";
 
 export default {
     state: {
         user: {
-            idUser: null,
+            id: null,
             login: null,
             name: null
         },
@@ -40,13 +40,13 @@ export default {
         [DO_LOGOUT]({ commit }) {            
             return new Promise((resolve) => {                
                 commit(SET_AUTH, {
-                    idUser: null,
+                    id: null,
                     login: null,
                     name: null,
                     token: null
                 }),
                 resolve({
-                    idUser: null,
+                    id: null,
                     login: null,
                     name: null
                 });
@@ -55,7 +55,7 @@ export default {
     },
     mutations: {
         [SET_AUTH](state, payload) {
-            state.user.idUser = payload.idUser;
+            state.user.id = payload.id;
             state.user.login = payload.login;
             state.user.name = payload.name;
             state.token = payload.token;
