@@ -1,6 +1,6 @@
 import { createWebHashHistory, createRouter } from "vue-router";
 // import store from "./store";
-import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import Home from '@/pages/Home.vue';
 import Calendar from "@/pages/Calendar.vue";
 import Phonebook from "@/pages/Phonebook.vue";

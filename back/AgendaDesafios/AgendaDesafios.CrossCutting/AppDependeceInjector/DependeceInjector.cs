@@ -9,6 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using AgendaDesafios.Domain.Abstractions;
 using AgendaDesafios.Infrastructure.Repositories;
+using System.Data;
+using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
+using Microsoft.Data.SqlClient;
+using AgendaDesafios.Application.Abstractions;
+using AgendaDesafios.Application.Services;
+using System.Reflection;
+using AgendaDesafios.Application.CommandsAndQueries.Queries;
 
 namespace AgendaDesafios.CrossCutting.AppDependeceInjector
 {
@@ -16,18 +23,34 @@ namespace AgendaDesafios.CrossCutting.AppDependeceInjector
     {
         public static void AddInfraestructureDataBase(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            string _connectionString = configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(_connectionString));
+
+            services.AddScoped<IDbConnection>(_ =>
+            {
+                var conn = new SqlConnection(_connectionString);
+                conn.Open();
+                return conn;
+            });
         }
+
         public static void AddInfraestructureRepository(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserDapperRepository, UserDapperRepository>();
+
             services.AddScoped<IPhonebookRepository, PhoneBookRepository>();
+
             services.AddScoped<ICalendarRepository, CalendarRepository>();
         }
         public static void AddServiceInjector(this IServiceCollection services)
         {
-            var myHandle = AppDomain.CurrentDomain.Load("AgendaDesafios.Infrastructure");
-            services.AddMediatR(conf => conf.RegisterServicesFromAssemblies(myHandle));
+            var assembly = Assembly.GetExecutingAssembly();
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
+            services.AddScoped<GetUserByLoginQueryHandler>();
+
+            services.AddScoped<IAuthService, AuthService>();
+
         }
     }
 }

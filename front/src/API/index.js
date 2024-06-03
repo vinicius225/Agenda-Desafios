@@ -17,7 +17,7 @@ const headers = {
 instance.interceptors.request.use(intimacaoWebApiTokenInterceptor);
 instance.interceptors.response.use(success, error);
 
-import UserAPI from '@/API/userAPI';
+import UserAPI from '@/api/userAPI';
 
 export default {      
     ...UserAPI({ instance, baseURL, headers }),
