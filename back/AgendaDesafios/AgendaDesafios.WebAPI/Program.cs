@@ -7,6 +7,7 @@ using AgendaDesafios.Application.DTOs;
 using AgendaDesafios.Application.Login.Queries;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using AgendaDesafios.WebAPI.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,8 +17,6 @@ builder.Services.AddControllers();
 builder.Services.AddMediatR(typeof(AuthUserQueryHandler).Assembly);
 
 
-
-// Configuração do Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agenda Blue", Version = "v1" });
@@ -50,7 +49,6 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(securityRequirement);
 });
 
-// Configuração da autenticação JWT
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -69,16 +67,20 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true
     };
 });
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 
-// Registro dos serviços de infraestrutura
 builder.Services.AddInfraestructureDataBase(builder.Configuration);
 builder.Services.AddInfraestructureRepository();
+builder.Services.AddServiceInjector();
+builder.Services.AddScoped<ExeceptionFilters>();
+
+
+builder.Services.AddMvc(options =>
+options.Filters.Add(new ExeceptionFilters()));;
 
 var app = builder.Build();
 
-// Configuração do CORS
 app.UseCors(builder =>
 {
     builder
@@ -94,12 +96,8 @@ if (app.Environment.IsDevelopment())
 
 // Middleware do Swagger
 app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agenda Blue v1");
-});
+app.UseSwaggerUI();
 
-// Middleware de autenticação e autorização
 app.UseAuthentication();
 app.UseAuthorization();
 

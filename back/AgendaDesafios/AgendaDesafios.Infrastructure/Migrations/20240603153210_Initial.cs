@@ -95,7 +95,7 @@ namespace AgendaDesafios.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Created", "Email", "Name", "Password", "Status", "Updated" },
-                values: new object[] { 1, new DateTime(2024, 6, 1, 9, 39, 53, 483, DateTimeKind.Local).AddTicks(8905), "admin@blue.com", "Admin", "yourpassword", 1, new DateTime(2024, 6, 1, 9, 39, 53, 483, DateTimeKind.Local).AddTicks(8916) });
+                values: new object[] { 1, new DateTime(2024, 6, 3, 12, 32, 9, 962, DateTimeKind.Local).AddTicks(5831), "admin@blue.com", "Admin", "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918", 1, new DateTime(2024, 6, 3, 12, 32, 9, 962, DateTimeKind.Local).AddTicks(5841) });
 
             migrationBuilder.InsertData(
                 table: "Calendars",

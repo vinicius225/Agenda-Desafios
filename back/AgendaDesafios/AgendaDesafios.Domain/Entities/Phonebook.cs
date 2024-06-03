@@ -22,7 +22,7 @@ namespace AgendaDesafios.Domain.Entities
             get => _status;
             private set => _status = value;
         }
-
+        Phonebook() { }
         public void UpdateStatus(StatussEnum newStatus)
         {
             _status = newStatus;

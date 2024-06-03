@@ -7,11 +7,13 @@ using AgendaDesafios.Application.Queries.CalendarSearch;
 using AgendaDesafios.Application.Queries.PhoneBookSearch;
 using AgendaDesafios.WebAPI.Responses;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace AgendaDesafios.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/calendar")]
     [ApiController]
     public class CalendarController : ControllerBase

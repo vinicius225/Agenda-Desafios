@@ -11,6 +11,8 @@ using System.Reflection;
 using AgendaDesafios.Application.Login.Queries;
 using AgendaDesafios.Application.DTOs;
 using MediatR;
+using AgendaDesafios.Application.Abstractions;
+using AgendaDesafios.Application.Services;
 
 namespace AgendaDesafios.CrossCutting.AppDependeceInjector
 {
@@ -39,6 +41,13 @@ namespace AgendaDesafios.CrossCutting.AppDependeceInjector
             services.AddScoped<IPhonebookDapperRepository, PhonebookDapperRepository>();
             services.AddScoped<ICalendarDapperRepository, CalendarDapperRepository>();
 
+
+        }
+        public static void AddServiceInjector(this IServiceCollection services)
+        {
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
         }
 

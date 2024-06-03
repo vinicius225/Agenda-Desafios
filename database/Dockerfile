@@ -22,4 +22,4 @@ CMD /bin/bash /usr/src/app/init-db.sh & /opt/mssql/bin/sqlservr
 
 
 #docker build -t my-mssql-server .
-#docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=MinhaSenhaForte123!" -p 1433:1433 --name sql_db  sqlserver_db
+#docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=MinhaSenhaForte123!" -p 1433:1433 --name sql_db  my-mssql-server

@@ -23,7 +23,10 @@ namespace AgendaDesafios.Domain.Entities
             Created = DateTime.Now;
             Updated = DateTime.Now;
         }
+        User()
+        {
 
+        }
         public User(int id, string name, string email, string password, StatussEnum status, DateTime created, DateTime updated)
         {
             ValidationDomain.VerificationDomainError(id < 0, DomainErrosConsts.ID_INVALID);

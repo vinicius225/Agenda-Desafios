@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace AgendaDesafios.Application.Services
 {
-    public class AuthServices : IAuthService
+    public class AuthService : IAuthService
     {
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor ;
 
-        public AuthServices(IHttpContextAccessor httpContextAccessor)
+        public AuthService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }

@@ -11,13 +11,13 @@ namespace AgendaDesafios.Application.Commands.CalendarUpdateCommand
 {
     public class CalendarUpdateCommand : IRequest<Calendar>
     {
-        public int Id { get; private set; }
-        public string Title { get; private set; }
-        public string Description { get; private set; }
-        public DateTime StartEvent { get; private set; }
-        public DateTime EndEvent { get; private set; }
-        public bool SendEmail { get; private set; }
-        public StatussEnum Status { get; private set; }
-        public SituationEventEnum SituationEvent { get; private set; }
+        public int Id { get;  set; }
+        public string Title { get;  set; }
+        public string Description { get;  set; }
+        public DateTime StartEvent { get;  set; }
+        public DateTime EndEvent { get;  set; }
+        public bool SendEmail { get;  set; }
+        public StatussEnum Status { get;  set; }
+        public SituationEventEnum SituationEvent { get;  set; }
     }
 }

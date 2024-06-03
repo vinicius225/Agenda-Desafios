@@ -41,6 +41,10 @@ namespace AgendaDesafios.Domain.Entities
             Id = id;
             ValidateCalendar(title, description, startEvent, endEvent, sendEmail, status, situationEvent, idUser);
         }
+        Calendar()
+        {
+
+        }
 
         private void ValidateCalendar(string title, string description, DateTime startEvent, DateTime endEvent, bool sendEmail, StatussEnum status, SituationEventEnum situationEvent,int idUser)
         {

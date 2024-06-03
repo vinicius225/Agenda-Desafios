@@ -14,13 +14,24 @@ namespace AgendaDesafios.Application.Commands.CalendarAaddCommand
     {
         private readonly ICalendarRepository _repository;
         private readonly IAuthService _authService;
-        public CalendarAddCommandHandle(ICalendarRepository repository)
+        private readonly IEmailService _emailService;
+        private readonly IUserDapperRepository _userDapperRepository;
+        public CalendarAddCommandHandle(ICalendarRepository repository, IEmailService emailService, IUserDapperRepository userDapperRepository, IAuthService authService)
         {
             _repository = repository;
+            _emailService = emailService;
+            _userDapperRepository = userDapperRepository;
+            _authService = authService;
         }
 
         public async Task<Calendar> Handle(CalendarAddCommand request, CancellationToken cancellationToken)
         {
+            if (request.SendEmail)
+            {
+                var user = await (_userDapperRepository.GetById(_authService.GetUserId()));
+               await  _emailService.SendEmail(user.Email, request.Title, request.Description);
+            }
+
             return await _repository.Add(new Calendar(
                 request.Title,
                 request.Description,

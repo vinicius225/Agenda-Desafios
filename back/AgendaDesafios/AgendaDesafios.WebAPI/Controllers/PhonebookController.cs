@@ -5,11 +5,13 @@ using AgendaDesafios.Application.Queries.PhonebookGetAll;
 using AgendaDesafios.Application.Queries.PhoneBookSearch;
 using AgendaDesafios.WebAPI.Responses;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace AgendaDesafios.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/phonebook")]
     [ApiController]
     public class PhonebookController : ControllerBase

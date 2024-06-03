@@ -24,19 +24,36 @@ namespace AgendaDesafios.Infrastructure.Repositories
         public async Task<IEnumerable<User>> GetAll()
         {
             string query = "select * from users";
-            return await _connection.QueryAsync<User>(query);
+            var result = await _connection.QueryAsync<User>(query);
+            return result;
         }
 
         public async Task<User> GetById(int id)
         {
             string query = "SELECT * FROM USERS WHERE ID=@id";
-            return await _connection.QueryFirstAsync<User>(query, id);
+            var  result = await  _connection.QueryFirstOrDefaultAsync<User>(query, id);
+            if (result == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return result;
 
         }
         public async Task<User> GetByLogin(string login)
         {
-            string query = "SELECT * FROM USERS WHERE Login=@login";
-            return await _connection.QueryFirstAsync<User>(query, new {login=login});
+            try
+            {
+                string query = "SELECT Id, Name, Email, Status, Password, Created, Updated FROM Schedule.dbo.Users WHERE Email=@login";
+                var result = await _connection.QueryFirstOrDefaultAsync<User>(query, new { login = login });
+                if (result == null)
+                {
+                    throw new KeyNotFoundException();
+                }
+                return result;
+            }catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
