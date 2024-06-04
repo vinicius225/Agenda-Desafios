@@ -247,7 +247,6 @@ const closeCadastroModal = () => {
 
 const deleteCalendar = (rowData) => {
   if (!rowData || !rowData.id) {
-    console.error("Invalid rowData:", rowData);
     return;
   }
 

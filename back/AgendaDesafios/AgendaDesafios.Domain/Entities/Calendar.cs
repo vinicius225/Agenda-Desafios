@@ -15,7 +15,7 @@ namespace AgendaDesafios.Domain.Entities
         public DateTime StartEvent { get; private set; }
         public DateTime EndEvent { get; private set; }
         public bool SendEmail { get; private set; }
-        private StatussEnum _status;
+        private StatussEnum _status = StatussEnum.active;
         public StatussEnum Status
         {
             get => _status;

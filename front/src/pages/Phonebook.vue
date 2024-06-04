@@ -49,30 +49,16 @@
       <form @submit.prevent="saveChanges">
         <div class="p-fluid">
           <div class="p-field">
-            <label for="title">Titulo</label>
-            <InputText id="title" required v-model="editedItem.title" />
+            <label for="name">Nome</label>
+            <InputText id="title" required v-model="editedItem.name" />
           </div>
           <div class="p-field">
-            <label for="description">Descrição</label>
-            <InputText required id="description" v-model="editedItem.description" />
+            <label for="phone">Telefone</label>
+            <InputText required id="phone" v-model="editedItem.phone" />
           </div>
           <div class="p-field">
-            <label for="startDate">Data Inicial</label>
-            <Calendar
-              id="startDate"
-              required
-              v-model="editedItem.startEvent"
-              :showTime="true"
-            />
-          </div>
-          <div class="p-field">
-            <label for="endDate">Data Final</label>
-            <Calendar
-              id="endDate"
-              required
-              v-model="editedItem.endEvent"
-              :showTime="true"
-            />
+            <label for="phone">E-mail</label>
+            <InputText required id="phone" v-model="editedItem.phone" />
           </div>
         </div>
 
@@ -89,34 +75,16 @@
       <form @submit.prevent="saveNew">
         <div class="p-fluid">
           <div class="p-field">
-            <label for="newTitle">Titulo</label>
-            <InputText id="newTitle" required v-model="newItem.title" />
+            <label for="name">Nome</label>
+            <InputText id="title" required v-model="editedItem.name" />
           </div>
           <div class="p-field">
-            <label for="newDescription">Descrição</label>
-            <InputText id="newDescription" required v-model="newItem.description" />
+            <label for="phone">Telefone</label>
+            <InputText required id="phone" v-model="editedItem.phone" />
           </div>
           <div class="p-field">
-            <label for="newStartDate">Data Inicial</label>
-            <Calendar
-              id="newStartDate"
-              v-model="newItem.startEvent"
-              required
-              :showTime="true"
-            />
-          </div>
-          <div class="p-field">
-            <label for="newEndDate">Data Final</label>
-            <Calendar
-              id="newEndDate"
-              required
-              v-model="newItem.endEvent"
-              :showTime="true"
-            />
-          </div>
-          <div class="p-field">
-            <label for="sendEmail">Enviar E-mail</label>
-            <Checkbox id="sendEmail" v-model="newItem.sendEmail" />
+            <label for="phone">E-mail</label>
+            <InputText required id="phone" v-model="editedItem.phone" />
           </div>
         </div>
         <div class="p-dialog-footer">
@@ -154,18 +122,14 @@ const contacts = ref([]);
 const displayEditModal = ref(false);
 const displayCadastroModal = ref(false);
 const editedItem = ref({
-  title: "",
-  description: "",
-  startEvent: "",
-  endEvent: "",
-  sendEmail: false,
+  name: "",
+  email: "",
+  phone: ""
 });
 const newItem = ref({
-  title: "",
-  description: "",
-  startEvent: "",
-  endEvent: "",
-  sendEmail: false,
+  name: "",
+  email: "",
+  phone: ""
 });
 
 const listCalendar = () => {
@@ -189,11 +153,9 @@ const openEditModal = (rowData) => {
 
 const openCadastroModal = () => {
   newItem.value = {
-    title: "",
-    description: "",
-    startEvent: "",
-    endEvent: "",
-    sendEmail: false,
+    name: "",
+  email: "",
+  phone: ""
   };
   displayCadastroModal.value = true;
 };
@@ -209,8 +171,13 @@ const closeEditModal = () => {
 };
 
 const saveNew = () => {
-  createCalendar(newItem.value);
-  closeCadastroModal();
+  WebApi.addPhonebook(newItem.value)
+    .then(() => {
+      listCalendar()
+    })
+    .catch((error) => {
+      console.error("Erro ao atualizar:", error);
+    });
 };
 
 const closeCadastroModal = () => {
@@ -221,11 +188,10 @@ const closeCadastroModal = () => {
 
 const deleteCalendar = (rowData) => {
   if (!rowData || !rowData.id) {
-    console.error("Invalid rowData:", rowData);
     return;
   }
 
-  WebApi.deleteCalendar(rowData.id)
+  WebApi.deletePhonebook(rowData.id)
     .then(() => {
       calendars.value = calendars.value.filter(
         (calendar) => calendar.id !== rowData.id
