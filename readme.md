@@ -1,5 +1,6 @@
 # Sistema de Agendamento Blue
 
+![alt text](docs/images/image.png)
 Este sistema foi desenvolvido seguindo os padrões da Clean Architecture e CQRS. Um dos objetivos era conectar a aplicação a uma fila no RabbitMQ, mas isso não foi viável devido às limitações de tempo.
 
 A aplicação é containerizada, com cada pasta contendo um Dockerfile com as respectivas configurações para garantir o funcionamento ideal das aplicações. Além disso, há um Docker Compose para orquestrar os containers.
