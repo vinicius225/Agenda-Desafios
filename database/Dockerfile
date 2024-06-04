@@ -1,8 +1,6 @@
 
 FROM mcr.microsoft.com/mssql/server
 
-ENV SA_PASSWORD=V@90fr_
-ENV ACCEPT_EULA=Y
 
 EXPOSE 1433
 
