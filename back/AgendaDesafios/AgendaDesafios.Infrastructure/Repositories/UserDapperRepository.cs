@@ -45,10 +45,6 @@ namespace AgendaDesafios.Infrastructure.Repositories
             {
                 string query = "SELECT Id, Name, Email, Status, Password, Created, Updated FROM Schedule.dbo.Users WHERE Email=@login";
                 var result = await _connection.QueryFirstOrDefaultAsync<User>(query, new { login = login });
-                if (result == null)
-                {
-                    throw new KeyNotFoundException();
-                }
                 return result;
             }catch (Exception ex)
             {

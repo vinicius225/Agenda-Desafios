@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  front:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - rede-projeto
+
+  back:
+    build:
+      context: ./back/AgendaDesafios/
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    networks:
+      - rede-projeto
+  db:
+    build:
+      context: ./database/
+      dockerfile: Dockerfile
+    ports:
+      - "1433:1433"
+    networks:
+      - rede-projeto
+      
+networks:
+  rede-projeto:

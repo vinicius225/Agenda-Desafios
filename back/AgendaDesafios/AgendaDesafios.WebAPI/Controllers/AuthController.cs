@@ -24,12 +24,12 @@ namespace AgendaDesafios.WebAPI.Controllers
         {
             try
             {
-                var response = _mediator.Send(auth);
+                var response =await  _mediator.Send(auth);
                 if(response == null) 
                 {
                     return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
                 }
-                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", response);
             }
             catch (Exception ex)
             {
