@@ -33,12 +33,12 @@ namespace AgendaDesafios.WebAPI.Controllers
         {
             try
             {
-                var response = await _mediator.Send(new CalendarQueryGetAll());
+                var response = _mediator.Send(new CalendarQueryGetAll());
                 if (response == null)
                 {
                     return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
                 }
-                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso",  response);
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
             }
             catch (Exception ex)
             {
@@ -51,12 +51,12 @@ namespace AgendaDesafios.WebAPI.Controllers
         {
             try
             {
-                var response = await _mediator.Send(new CalendarSearchQuery() { Search = query });
+                var response = _mediator.Send(new CalendarSearchQuery() { Search = query });
                 if (response == null)
                 {
                     return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
                 }
-                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso",  response);
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
             }
             catch (Exception ex)
             {
@@ -69,12 +69,12 @@ namespace AgendaDesafios.WebAPI.Controllers
         {
             try
             {
-                var response = await _mediator.Send(query);
+                var response = _mediator.Send(query);
                 if (response == null)
                 {
                     return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
                 }
-                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", response);
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
             }
             catch (Exception ex)
             {
@@ -87,12 +87,12 @@ namespace AgendaDesafios.WebAPI.Controllers
         {
             try
             {
-                var response = await _mediator.Send(query);
+                var response = _mediator.Send(query);
                 if (response == null)
                 {
                     return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
                 }
-                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", response);
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
             }
             catch (Exception ex)
             {
@@ -101,20 +101,16 @@ namespace AgendaDesafios.WebAPI.Controllers
             }
         }
         [HttpDelete("{id}")]
-        public async Task<IResult> Delete( int id)
+        public async Task<IResult> Delete([FromQuery] int id)
         {
             try
             {
-                if (id == 0)
-                {
-                    return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
-                }
-                var response  =await  _mediator.Send(new CalendarDeleteCommand() { Id = id });
+                var response = _mediator.Send(new CalendarDeleteCommand() { Id = id });
                 if (response == null)
                 {
                     return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
                 }
-                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", response);
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
             }
             catch (Exception ex)
             {

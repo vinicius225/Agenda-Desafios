@@ -1,6 +1,6 @@
-﻿using AgendaDesafios.Application.Commands.PhonebookDeleteCommand;
-using AgendaDesafios.Application.CommandsAndQueries.Phonebook.Commands.PhonebookCreateCommand;
-using AgendaDesafios.Application.CommandsAndQueries.Phonebook.Commands.PhonebookUpdateCommand;
+﻿using AgendaDesafios.Application.Commands.PhonebookCreateCommand;
+using AgendaDesafios.Application.Commands.PhonebookDeleteCommand;
+using AgendaDesafios.Application.Commands.PhonebookUpdateCommand;
 using AgendaDesafios.Application.Queries.PhonebookGetAll;
 using AgendaDesafios.Application.Queries.PhoneBookSearch;
 using AgendaDesafios.WebAPI.Responses;
@@ -96,14 +96,10 @@ namespace AgendaDesafios.WebAPI.Controllers
             }
         }
         [HttpDelete("{id}")]
-        public async Task<IResult> Delete(int id)
+        public async Task<IResult> Delete( int id)
         {
             try
             {
-                if (id == 0)
-                {
-                    return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
-                }
                 var response =await _mediator.Send(new PhonebookDeleteCommand { Id = id });
                 if (response == null)
                 {
