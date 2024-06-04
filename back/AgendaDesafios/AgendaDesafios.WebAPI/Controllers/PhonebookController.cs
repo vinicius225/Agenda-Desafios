@@ -26,30 +26,50 @@ namespace AgendaDesafios.WebAPI.Controllers
         public async Task<IResult> Get()
         {
             var response = _mediator.Send(new PhonebookQueryGetAll());
+            if (response == null)
+            {
+                return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+            }
             return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
         }
-        [HttpGet("{id}")]
-        public async Task<IResult> Get([FromHeader] PhonebookSearchQuery query)
+        [HttpGet("{query}")]
+        public async Task<IResult> Get([FromQuery] string query )
         {
-            var response = _mediator.Send(query);
+            var response = _mediator.Send(new PhonebookSearchQuery { Search = query});
+            if (response == null)
+            {
+                return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+            }
             return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
         }
         [HttpPost]
         public async Task<IResult> Post(PhonebookCreateCommand query)
         {
             var response = _mediator.Send(query);
+            if (response == null)
+            {
+                return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+            }
             return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
         }
         [HttpPut]
         public async Task<IResult> Put(PhonebookUpdateCommand query)
         {
             var response = _mediator.Send(query);
+            if (response == null)
+            {
+                return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+            }
             return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
         }
-        [HttpDelete]
-        public async Task<IResult> Delete(PhonebookDeleteCommand query)
+        [HttpDelete("{id}")]
+        public async Task<IResult> Delete([FromQuery] int id)
         {
-            var response = _mediator.Send(query);
+            var response = _mediator.Send(new PhonebookDeleteCommand { Id = id});
+            if (response == null)
+            {
+                return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+            }
             return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
         }
     }

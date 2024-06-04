@@ -15,9 +15,10 @@ namespace AgendaDesafios.Application.Commands.PhonebookCreateCommand
     {
         private readonly IPhonebookRepository _phonebookRepository;
         private readonly IAuthService _authService;
-        public PhonebookCreateCommandHandle(IPhonebookRepository phonebookRepository)
+        public PhonebookCreateCommandHandle(IPhonebookRepository phonebookRepository, IAuthService authService)
         {
             _phonebookRepository = phonebookRepository;
+            _authService = authService;
         }
 
         public async Task<Phonebook> Handle(PhonebookCreateCommand request, CancellationToken cancellationToken)

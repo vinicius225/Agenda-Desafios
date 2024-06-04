@@ -14,9 +14,10 @@ namespace AgendaDesafios.Application.Commands.PhonebookUpdateCommand
     {
         private readonly IPhonebookRepository _phonebookRepository;
         private readonly IAuthService _authService;
-        public PhonebookUpdateCommandHandle(IPhonebookRepository phonebookRepository)
+        public PhonebookUpdateCommandHandle(IPhonebookRepository phonebookRepository, IAuthService authService)
         {
             _phonebookRepository = phonebookRepository;
+            _authService = authService;
         }
 
         public async Task<Phonebook> Handle(PhonebookUpdateCommand request, CancellationToken cancellationToken)
