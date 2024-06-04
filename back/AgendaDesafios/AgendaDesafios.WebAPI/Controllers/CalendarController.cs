@@ -101,7 +101,7 @@ namespace AgendaDesafios.WebAPI.Controllers
             }
         }
         [HttpDelete("{id}")]
-        public async Task<IResult> Delete([FromQuery] int id)
+        public async Task<IResult> Delete( int id)
         {
             try
             {
