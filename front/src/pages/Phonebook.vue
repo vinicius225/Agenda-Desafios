@@ -2,7 +2,7 @@
   <div>
     <div class="grid">
       <div class="col">
-        <h1></h1>
+        <h1>Agenda de Contatos</h1>
       </div>
       <div class="col button">
         <Button
@@ -20,10 +20,9 @@
       responsiveLayout="scroll"
     >
       <Column field="name" header="Nome" :resizable="true"></Column>
-      <Column field="email" header="W-mail" :resizable="true"></Column>
-      <Column field="phone" header="Numero" :resizable="true">
-      </Column>
-      <Column header="Edit" :resizable="true">
+      <Column field="email" header="E-mail" :resizable="true"></Column>
+      <Column field="phone" header="Número" :resizable="true"></Column>
+      <Column header="Ações" :resizable="true">
         <template #body="{ data }">
           <Button
             icon="pi pi-pencil"
@@ -42,49 +41,62 @@
     <!-- Modal de Edição -->
     <Dialog
       v-model:visible="displayEditModal"
-      header="Editar Compromisso"
+      header="Editar Contato"
       style="width: 50%"
     >
       <!-- Formulário de Edição -->
       <form @submit.prevent="saveChanges">
         <div class="p-fluid">
           <div class="p-field">
-            <label for="name">Nome</label>
-            <InputText id="title" required v-model="editedItem.name" />
+            <label for="editName">Nome</label>
+            <InputText id="editName" required v-model="editedItem.name" />
           </div>
           <div class="p-field">
-            <label for="phone">Telefone</label>
-            <InputText required id="phone" v-model="editedItem.phone" />
+            <label for="editPhone">Telefone</label>
+            <InputText required id="editPhone" v-model="editedItem.phone" />
           </div>
           <div class="p-field">
-            <label for="phone">E-mail</label>
-            <InputText required id="phone" v-model="editedItem.phone" />
+            <label for="editEmail">E-mail</label>
+            <InputText required id="editEmail" v-model="editedItem.email" />
           </div>
         </div>
-
+        <div class="p-dialog-footer">
+          <Button
+            label="Cancelar"
+            icon="pi pi-times"
+            class="p-button-text"
+            @click="closeEditModal"
+          />
+          <Button
+            type="submit"
+            label="Salvar"
+            icon="pi pi-check"
+            class="p-button-text"
+          />
+        </div>
       </form>
     </Dialog>
 
     <!-- Modal de Cadastro -->
     <Dialog
       v-model:visible="displayCadastroModal"
-      header="Cadastrar Compromisso"
+      header="Cadastrar Contato"
       style="width: 50%"
     >
       <!-- Formulário de Cadastro -->
       <form @submit.prevent="saveNew">
         <div class="p-fluid">
           <div class="p-field">
-            <label for="name">Nome</label>
-            <InputText id="title" required v-model="editedItem.name" />
+            <label for="newName">Nome</label>
+            <InputText id="newName" required v-model="newItem.name" />
           </div>
           <div class="p-field">
-            <label for="phone">Telefone</label>
-            <InputText required id="phone" v-model="editedItem.phone" />
+            <label for="newPhone">Telefone</label>
+            <InputText required id="newPhone" v-model="newItem.phone" />
           </div>
           <div class="p-field">
-            <label for="phone">E-mail</label>
-            <InputText required id="phone" v-model="editedItem.phone" />
+            <label for="newEmail">E-mail</label>
+            <InputText required id="newEmail" v-model="newItem.email" />
           </div>
         </div>
         <div class="p-dialog-footer">
@@ -113,10 +125,7 @@ import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
-import Checkbox from "primevue/checkbox";
-import Calendar from "primevue/calendar";
 import WebApi from "@/api";
-import { maskDate } from "@/utils/masks";
 
 const contacts = ref([]);
 const displayEditModal = ref(false);
@@ -129,21 +138,22 @@ const editedItem = ref({
 const newItem = ref({
   name: "",
   email: "",
-  phone: ""
+  phone: "",
+  status : 1
 });
 
-const listCalendar = () => {
+const listContacts = () => {
   WebApi.getAllPhonebook()
     .then((res) => {
       contacts.value = res.data.result;
     })
     .catch((error) => {
-      console.error("Error fetching calendars:", error);
+      console.error("Erro ao buscar contatos:", error);
     });
 };
 
 onMounted(() => {
-  listCalendar();
+  listContacts();
 });
 
 const openEditModal = (rowData) => {
@@ -154,14 +164,15 @@ const openEditModal = (rowData) => {
 const openCadastroModal = () => {
   newItem.value = {
     name: "",
-  email: "",
-  phone: ""
+    email: "",
+    phone: "",
+    status : 1
   };
   displayCadastroModal.value = true;
 };
 
 const saveChanges = () => {
-  updateCalendar(editedItem.value);
+  updateContact(editedItem.value);
   closeEditModal();
 };
 
@@ -173,16 +184,16 @@ const closeEditModal = () => {
 const saveNew = () => {
   WebApi.addPhonebook(newItem.value)
     .then(() => {
-      listCalendar()
+      listContacts();
+      closeCadastroModal();
     })
     .catch((error) => {
-      console.error("Erro ao atualizar:", error);
+      console.error("Erro ao cadastrar:", error);
     });
 };
 
 const closeCadastroModal = () => {
   newItem.value = {};
-  display
   displayCadastroModal.value = false;
 };
 
@@ -193,24 +204,21 @@ const deleteCalendar = (rowData) => {
 
   WebApi.deletePhonebook(rowData.id)
     .then(() => {
-      calendars.value = calendars.value.filter(
-        (calendar) => calendar.id !== rowData.id
-      );
+      listContacts
     })
     .catch((error) => {
-      console.error("Error deleting calendar:", error);
+      console.error("Erro ao deletar contato:", error);
     });
 };
 
-
-const updateCalendar = (calendar) => {
-  WebApi.updateCalendar(calendar)
+const updateContact = (contact) => {
+  WebApi.updatePhonebook(contact)
     .then(() => {
-      const index = calendars.value.findIndex((c) => c.id === calendar.id);
-      calendars.value.splice(index, 1, calendar);
+      const index = contacts.value.findIndex((c) => c.id === contact.id);
+      contacts.value.splice(index, 1, contact);
     })
     .catch((error) => {
-      console.error("Erro ao atualizar o calendário:", error);
+      console.error("Erro ao atualizar contato:", error);
     });
 };
 </script>
@@ -236,9 +244,5 @@ const updateCalendar = (calendar) => {
 
 .p-datatable-scrollable-wrapper {
   overflow-x: auto;
-}
-.button {
-  display: flex;
-  justify-content: flex-end;
 }
 </style>

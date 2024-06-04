@@ -26,7 +26,7 @@ namespace AGendaDesafios.UnitTests.Controllers
         public async Task Authentication_ShouldReturnOk_WhenValidRequest()
         {
             // Arrange
-            var authUserQuery = new AuthUserQuery { Login = "testuser", Password = "testpass" };
+            var authUserQuery = new AuthUserQuery { Login = "testuser", Password = "jljn" };
             var authResponse = new AuthDTO { token = "sampleToken", Name = "xpto", email = "xpto.com" };
 
             _mediatorMock.Setup(m => m.Send(authUserQuery, default))
@@ -47,7 +47,7 @@ namespace AGendaDesafios.UnitTests.Controllers
         public async Task Authentication_ShouldReturnBadRequest_WhenInvalidRequest()
         {
             // Arrange
-            var authUserQuery = new AuthUserQuery { Login = "testuser", Password = "testpass" };
+            var authUserQuery = new AuthUserQuery { Login = "xpoy", Password = "pj" };
 
             _mediatorMock.Setup(m => m.Send(authUserQuery, default))
                          .ReturnsAsync((AuthDTO)null);

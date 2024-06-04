@@ -2,18 +2,12 @@
   <div>
     <div class="grid">
       <div class="col">
-        <Chart type="doughnut" :data="chartData" :options="lightOptions" :plugins="plugins" />
+        <h2 style="text-align: center;">Media de Atrasos nos Compromissos</h2>
+        <Chart type="doughnut" :data="chartData1" :options="lightOptions" :plugins="plugins" />
       </div>
       <div class="col">
-        <Chart type="doughnut" :data="chartData" :options="lightOptions" :plugins="plugins" />
-      </div>
-    </div>
-    <div class="grid">
-      <div class="col">
-        <Chart type="doughnut" :data="chartData" :options="lightOptions" :plugins="plugins" />
-      </div>
-      <div class="col">
-        <Chart type="doughnut" :data="chartData" :options="lightOptions" :plugins="plugins" />
+        <h2 style="text-align: center;">Media de Compromissos Cancelados</h2>
+        <Chart type="doughnut" :data="chartData2" :options="lightOptions" :plugins="plugins" />
       </div>
     </div>
   </div>
@@ -23,11 +17,19 @@
 import { ref } from "vue";
 import Chart from "primevue/chart";
 
-const chartData = ref({
-  labels: ["A", "B", "C"],
+const chartData1 = ref({
+  labels: ["Atraso", "Presença"],
   datasets: [
     {
-      data: [300, 50, 100],
+      data: [300, 196],
+    },
+  ],
+});
+const chartData2 = ref({
+  labels: ["Presentes", "Cancelados"],
+  datasets: [
+    {
+      data: [500, 50],
     },
   ],
 });

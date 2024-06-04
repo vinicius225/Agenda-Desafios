@@ -19,7 +19,7 @@
       scrollHeight="400px"
       responsiveLayout="scroll"
     >
-      <Column field="title" header="Titulo" :resizable="true"></Column>
+      <Column field="title" header="Título" :resizable="true"></Column>
       <Column field="description" header="Descrição" :resizable="true"></Column>
       <Column field="startEvent" header="Data Inicial" :resizable="true">
         <template #body="{ data }">
@@ -31,7 +31,7 @@
           {{ maskDate(data.endEvent) }}
         </template>
       </Column>
-      <Column header="Edit" :resizable="true">
+      <Column header="Ações" :resizable="true">
         <template #body="{ data }">
           <Button
             icon="pi pi-pencil"
@@ -57,12 +57,16 @@
       <form @submit.prevent="saveChanges">
         <div class="p-fluid">
           <div class="p-field">
-            <label for="title">Titulo</label>
+            <label for="title">Título</label>
             <InputText id="title" required v-model="editedItem.title" />
           </div>
           <div class="p-field">
             <label for="description">Descrição</label>
-            <InputText required id="description" v-model="editedItem.description" />
+            <InputText
+              required
+              id="description"
+              v-model="editedItem.description"
+            />
           </div>
           <div class="p-field">
             <label for="startDate">Data Inicial</label>
@@ -110,12 +114,16 @@
       <form @submit.prevent="saveNew">
         <div class="p-fluid">
           <div class="p-field">
-            <label for="newTitle">Titulo</label>
+            <label for="newTitle">Título</label>
             <InputText id="newTitle" required v-model="newItem.title" />
           </div>
           <div class="p-field">
             <label for="newDescription">Descrição</label>
-            <InputText id="newDescription" required v-model="newItem.description" />
+            <InputText
+              id="newDescription"
+              required
+              v-model="newItem.description"
+            />
           </div>
           <div class="p-field">
             <label for="newStartDate">Data Inicial</label>
@@ -134,10 +142,6 @@
               v-model="newItem.endEvent"
               :showTime="true"
             />
-          </div>
-          <div class="p-field">
-            <label for="sendEmail">Enviar E-mail</label>
-            <Checkbox id="sendEmail" v-model="newItem.sendEmail" />
           </div>
         </div>
         <div class="p-dialog-footer">
@@ -166,7 +170,6 @@ import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import Column from "primevue/column";
 import InputText from "primevue/inputtext";
-import Checkbox from "primevue/checkbox";
 import Calendar from "primevue/calendar";
 import WebApi from "@/api";
 import { maskDate } from "@/utils/masks";
@@ -187,6 +190,7 @@ const newItem = ref({
   startEvent: "",
   endEvent: "",
   sendEmail: false,
+  status: 1,
 });
 
 const listCalendar = () => {
@@ -195,7 +199,7 @@ const listCalendar = () => {
       calendars.value = res.data.result;
     })
     .catch((error) => {
-      console.error("Error fetching calendars:", error);
+      console.error("Erro ao buscar compromissos:", error);
     });
 };
 
@@ -215,13 +219,13 @@ const openCadastroModal = () => {
     startEvent: "",
     endEvent: "",
     sendEmail: false,
+    status: 1,
   };
   displayCadastroModal.value = true;
 };
 
 const saveChanges = () => {
   updateCalendar(editedItem.value);
-  closeEditModal();
 };
 
 const closeEditModal = () => {
@@ -230,18 +234,24 @@ const closeEditModal = () => {
 };
 
 const saveNew = () => {
+  if (new Date(newItem.value.endEvent) < new Date(newItem.value.startEvent)) {
+    alert("Data final maior que a data inicial");
+    return;
+  }
   WebApi.addCalendar(newItem.value)
     .then(() => {
-      listCalendar()
+      listCalendar();
+      closeCadastroModal();
     })
     .catch((error) => {
-      console.error("Erro ao atualizar o calendário:", error);
+      listCalendar();
+      closeCadastroModal();
+      console.error("Erro ao cadastrar compromisso:", error);
     });
 };
 
 const closeCadastroModal = () => {
   newItem.value = {};
-  display
   displayCadastroModal.value = false;
 };
 
@@ -257,19 +267,24 @@ const deleteCalendar = (rowData) => {
       );
     })
     .catch((error) => {
-      console.error("Error deleting calendar:", error);
+      console.error("Erro ao deletar compromisso:", error);
     });
 };
 
-
 const updateCalendar = (calendar) => {
+  if (new Date(calendar.endEvent) < new Date(calendar.startEvent)) {
+    alert("Data final maior que a data inicial");
+    return;
+  }
   WebApi.putCalendar(calendar)
     .then(() => {
       const index = calendars.value.findIndex((c) => c.id === calendar.id);
       calendars.value.splice(index, 1, calendar);
+      closeEditModal();
     })
     .catch((error) => {
-      console.error("Erro ao atualizar o calendário:", error);
+      console.error("Erro ao atualizar compromisso:", error);
+      closeEditModal();
     });
 };
 </script>
@@ -295,9 +310,5 @@ const updateCalendar = (calendar) => {
 
 .p-datatable-scrollable-wrapper {
   overflow-x: auto;
-}
-.button {
-  display: flex;
-  justify-content: flex-end;
 }
 </style>

@@ -6,7 +6,6 @@
     <div class="menu">
       <i class="pi pi-user icon" @click="toggleDropdown"></i>
       <div v-if="isDropdownOpen" class="dropdown-menu">
-        <router-link to="/profile" class="dropdown-item">Perfil</router-link>
         <a @click="exit" class="dropdown-item">Sair</a>
       </div>
     </div>
