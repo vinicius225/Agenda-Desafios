@@ -4,10 +4,10 @@ using System.Text;
 using AgendaDesafios.CrossCutting.AppDependeceInjector;
 using Microsoft.OpenApi.Models;
 using AgendaDesafios.Application.DTOs;
-using AgendaDesafios.Application.Login.Queries;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using AgendaDesafios.WebAPI.Filters;
+using AgendaDesafios.Application.CommandsAndQueries.Login.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 

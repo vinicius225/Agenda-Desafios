@@ -1,4 +1,4 @@
-﻿using AgendaDesafios.Application.Login.Queries;
+﻿using AgendaDesafios.Application.CommandsAndQueries.Login.Queries;
 using AgendaDesafios.WebAPI.Responses;
 using Azure;
 using MediatR;

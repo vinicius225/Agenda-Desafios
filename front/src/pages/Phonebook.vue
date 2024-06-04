@@ -204,7 +204,7 @@ const deleteCalendar = (rowData) => {
 
   WebApi.deletePhonebook(rowData.id)
     .then(() => {
-      listContacts
+      listContacts()
     })
     .catch((error) => {
       console.error("Erro ao deletar contato:", error);

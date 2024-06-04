@@ -33,20 +33,19 @@ export default ({ instance, baseURL, headers }) => {
       return instance({
         method: "put",
         baseURL,
-        url: "calendar",
+        url: `calendar/${calendar.id}`,
         responseType: "json",
         headers: headers,
         data: calendar,
       });
     },
-    deleteCalendar(calendar) {
+    deleteCalendar(id) {
       return instance({
         method: "delete",
         baseURL,
-        url: "calendar",
+        url: `calendar/${id}`, 
         responseType: "json",
         headers: headers,
-        params: calendar,
       });
     },
   };
