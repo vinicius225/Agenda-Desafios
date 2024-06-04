@@ -26,7 +26,7 @@ export default ({ instance, baseURL, headers }) => {
         url: "calendar",
         responseType: "json",
         headers: headers,
-        params: calendar,
+        data: calendar,
       });
     },
     putCalendar(calendar) {
@@ -36,7 +36,7 @@ export default ({ instance, baseURL, headers }) => {
         url: "calendar",
         responseType: "json",
         headers: headers,
-        params: calendar,
+        data: calendar,
       });
     },
     deleteCalendar(calendar) {

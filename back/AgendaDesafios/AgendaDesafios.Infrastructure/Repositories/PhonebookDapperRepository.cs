@@ -21,13 +21,13 @@ namespace AgendaDesafios.Infrastructure.Repositories
 
         public async Task<IEnumerable<Phonebook>> GetAll()
         {
-            string query = "select * from calendars";
+            string query = "select * from phonebooks where status != 0";
             return await _connection.QueryAsync<Phonebook>(query);
         }
 
         public async Task<IEnumerable<Phonebook>> Search(string data)
         {
-            string query = "select * from calendars where title like='%@data%' or description like='%@data%'";
+            string query = "select * from phonebooks where name like '%@data%' and status != 0";
             return await _connection.QueryAsync<Phonebook>(query, new { data = data });
 
         }

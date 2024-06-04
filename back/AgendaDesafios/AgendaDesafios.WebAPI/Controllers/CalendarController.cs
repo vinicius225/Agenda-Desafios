@@ -31,52 +31,92 @@ namespace AgendaDesafios.WebAPI.Controllers
         [HttpGet]
         public async Task<IResult> Get()
         {
-            var response = _mediator.Send(new CalendarQueryGetAll());
-            if (response == null)
+            try
             {
-                return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+                var response = _mediator.Send(new CalendarQueryGetAll());
+                if (response == null)
+                {
+                    return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+                }
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
             }
-            return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
+            catch (Exception ex)
+            {
+                return ResponseAPI.Send(System.Net.HttpStatusCode.ServiceUnavailable, "Erro naa plataforma");
+
+            }
         }
         [HttpGet("{query}")]
         public async Task<IResult> Get([FromQuery] string query)
         {
-            var response = _mediator.Send(new CalendarSearchQuery(){Search=query });
-            if (response == null)
+            try
             {
-                return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+                var response = _mediator.Send(new CalendarSearchQuery() { Search = query });
+                if (response == null)
+                {
+                    return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+                }
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
             }
-            return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
+            catch (Exception ex)
+            {
+                return ResponseAPI.Send(System.Net.HttpStatusCode.ServiceUnavailable, "Erro naa plataforma");
+
+            }
         }
         [HttpPost]
         public async Task<IResult> Post(CalendarAddCommand query)
         {
-            var response = _mediator.Send(query);
-            if (response == null)
+            try
             {
-                return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+                var response = _mediator.Send(query);
+                if (response == null)
+                {
+                    return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+                }
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
             }
-            return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
+            catch (Exception ex)
+            {
+                return ResponseAPI.Send(System.Net.HttpStatusCode.ServiceUnavailable, "Erro naa plataforma");
+
+            }
         }
         [HttpPut]
         public async Task<IResult> Put(CalendarUpdateCommand query)
         {
-            var response = _mediator.Send(query);
-            if (response == null)
+            try
             {
-                return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+                var response = _mediator.Send(query);
+                if (response == null)
+                {
+                    return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+                }
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
             }
-            return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
+            catch (Exception ex)
+            {
+                return ResponseAPI.Send(System.Net.HttpStatusCode.ServiceUnavailable, "Erro naa plataforma");
+
+            }
         }
         [HttpDelete("{id}")]
         public async Task<IResult> Delete([FromQuery] int id)
         {
-            var response = _mediator.Send(new CalendarDeleteCommand(){ Id = id});  
-            if (response == null)
+            try
             {
-                return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+                var response = _mediator.Send(new CalendarDeleteCommand() { Id = id });
+                if (response == null)
+                {
+                    return ResponseAPI.Send(System.Net.HttpStatusCode.BadRequest, "Parametros invalidos");
+                }
+                return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
             }
-            return ResponseAPI.Send(System.Net.HttpStatusCode.OK, "Sucesso", await response);
+            catch (Exception ex)
+            {
+                return ResponseAPI.Send(System.Net.HttpStatusCode.ServiceUnavailable, "Erro naa plataforma");
+
+            }
         }
     }
 }

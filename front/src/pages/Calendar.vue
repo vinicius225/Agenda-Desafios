@@ -230,8 +230,13 @@ const closeEditModal = () => {
 };
 
 const saveNew = () => {
-  createCalendar(newItem.value);
-  closeCadastroModal();
+  WebApi.addCalendar(newItem.value)
+    .then(() => {
+      listCalendar()
+    })
+    .catch((error) => {
+      console.error("Erro ao atualizar o calendário:", error);
+    });
 };
 
 const closeCadastroModal = () => {
@@ -259,7 +264,7 @@ const deleteCalendar = (rowData) => {
 
 
 const updateCalendar = (calendar) => {
-  WebApi.updateCalendar(calendar)
+  WebApi.putCalendar(calendar)
     .then(() => {
       const index = calendars.value.findIndex((c) => c.id === calendar.id);
       calendars.value.splice(index, 1, calendar);

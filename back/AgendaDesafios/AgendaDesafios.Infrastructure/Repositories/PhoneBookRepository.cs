@@ -47,14 +47,11 @@ namespace AgendaDesafios.Infrastructure.Repositories
             if (obj == null)
                 throw new ArgumentNullException(nameof(obj));
 
-            var phonebook = await _context.Phonebooks.FindAsync(obj.Id);
-            if (phonebook == null)
-                throw new ArgumentException();
             _context.Phonebooks.Update(obj);
 
             await _context.SaveChangesAsync();
 
-            return phonebook;
+            return obj;
         }
     }
 }

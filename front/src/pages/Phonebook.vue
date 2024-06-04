@@ -75,20 +75,7 @@
             />
           </div>
         </div>
-        <div class="p-dialog-footer">
-          <Button
-            label="Cancelar"
-            icon="pi pi-times"
-            class="p-button-text"
-            @click="closeEditModal"
-          />
-          <Button
-            type="submit"
-            label="Salvar"
-            icon="pi pi-check"
-            class="p-button-text"
-          />
-        </div>
+
       </form>
     </Dialog>
 

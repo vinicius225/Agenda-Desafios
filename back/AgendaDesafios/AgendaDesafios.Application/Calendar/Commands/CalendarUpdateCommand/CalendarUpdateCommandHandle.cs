@@ -15,9 +15,10 @@ namespace AgendaDesafios.Application.Commands.CalendarUpdateCommand
         private readonly ICalendarRepository _calendarRepository;
         private readonly IAuthService _authService;
 
-        public CalendarUpdateCommandHandle(ICalendarRepository calendarRepository)
+        public CalendarUpdateCommandHandle(ICalendarRepository calendarRepository, IAuthService authService)
         {
             _calendarRepository = calendarRepository;
+            _authService = authService;
         }
 
         public async Task<Calendar> Handle(CalendarUpdateCommand request, CancellationToken cancellationToken)

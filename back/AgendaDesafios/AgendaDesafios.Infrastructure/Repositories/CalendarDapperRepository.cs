@@ -21,13 +21,13 @@ namespace AgendaDesafios.Infrastructure.Repositories
 
         public async Task<IEnumerable<Calendar>> GetAll()
         {
-            string query = "select * from calendars";
+            string query = "select * from calendars where status != 0";
             return await _connection.QueryAsync<Calendar>(query);
         }
 
         public async Task<IEnumerable<Calendar>> Search(string data)
         {
-            string query = "select * from calendars where name like='%@data%'";
+            string query = "select * from calendars where title like'%@data%' or description like '%@data% and status != 0'";
             return await _connection.QueryAsync<Calendar>(query, new {data = data});
 
         }
