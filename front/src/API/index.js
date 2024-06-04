@@ -18,8 +18,10 @@ instance.interceptors.response.use(success, error);
 
 import UserAPI from '@/api/userAPI';
 import CalendarAPI from '@/api/calendarAPI';
+import phonebookAPI from '@/api/phonebookAPI';
 
 export default {      
     ...UserAPI({ instance, baseURL, headers }),
     ...CalendarAPI({ instance, baseURL, headers }),
+    ...phonebookAPI({ instance, baseURL, headers }),
 };
