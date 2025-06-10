@@ -1,18 +1,18 @@
 version: '3.8'
 
 services:
-  front:
+  frontend:
     build:
-      context: ./back
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "8080:80"
     networks:
       - rede-projeto
 
-  back:
+  backend:
     build:
-      context: ./back/AgendaDesafios/
+      context: ./backend/AgendaDesafios/
       dockerfile: Dockerfile
     ports:
       - "5000:8080"
